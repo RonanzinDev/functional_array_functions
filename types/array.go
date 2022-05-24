@@ -1,7 +1,7 @@
 package types
 
 type Array[T any] struct {
-	data []T
+	Data []T
 }
 
 func NewArray[M any](data []M) Array[M] {
@@ -10,8 +10,8 @@ func NewArray[M any](data []M) Array[M] {
 }
 
 func (a *Array[T]) Map(f func(T) T) []T {
-	n := make([]T, len(a.data))
-	for i, e := range a.data {
+	n := make([]T, len(a.Data))
+	for i, e := range a.Data {
 		n[i] = f(e)
 	}
 	return n
@@ -19,19 +19,29 @@ func (a *Array[T]) Map(f func(T) T) []T {
 
 func (a *Array[T]) Filter(f func(T) bool) []T {
 	var n []T
-	for i := range a.data {
-		if f(a.data[i]) {
-			n = append(n, a.data[i])
+	for i := range a.Data {
+		if f(a.Data[i]) {
+			n = append(n, a.Data[i])
 		}
 	}
 	return n
 }
 func (a *Array[T]) FilterStructs(f func(T) bool) T {
 	var n T
-	for i := range a.data {
-		if f(a.data[i]) {
-			n = a.data[i]
+	for i := range a.Data {
+		if f(a.Data[i]) {
+			n = a.Data[i]
 		}
 	}
 	return n
+}
+
+func (a *Array[T]) Append(v T) {
+	n := make([]T, len(a.Data)+1)
+	copy(n, a.Data)
+	// for i := range a.Data {
+	// 	n[i] = a.Data[i]
+	// }
+	n[len(n)-1] = v
+	a.Data = n
 }
